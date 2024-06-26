@@ -1,4 +1,4 @@
-# Polar Vantage V: satellites
+# Polar Vantage V Satellites
 
 Polar Vantage V has several options for positioning satellites:
 
