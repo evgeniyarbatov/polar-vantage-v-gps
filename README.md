@@ -1,2 +1,9 @@
 # polar-vantage-v
-Testing GPS accuracy of Polar Vantage V
+
+Polar Vantage V has several options for positioning satellites:
+
+- GPS + Glonass (default)
+- GPS + Galileo
+- GPS + QZSS
+
+Which of these give better accuracy for my location?
