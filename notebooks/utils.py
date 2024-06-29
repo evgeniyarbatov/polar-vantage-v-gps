@@ -101,7 +101,7 @@ def crop_route(df, start_location, stop_location, start_point_count):
   
   df = df.iloc[start_point_idx:end_point_idx]
   
-  return df
+  return df.reset_index(drop=True)
 
 def get_total_distance(df):
   df['prev_latitude'] = df['latitude'].shift(1)
