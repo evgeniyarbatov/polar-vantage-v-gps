@@ -1,0 +1,16 @@
+services:
+  postgis:
+    image: postgis/postgis
+    environment:
+      - POSTGRES_DB=gpx
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+    ports:
+      - 5432:5432
+    networks:
+      - default
+    restart: unless-stopped
+
+networks:
+  default:
+    driver: bridge
