@@ -92,7 +92,7 @@ FROM
       cur.execute(query)
       rows = cur.fetchall()
 
-  df = pd.DataFrame(rows, columns=["time", "latitude", "longitude", "distance_to_route"])
+  df = pd.DataFrame(rows, columns=["time", "lat", "lon", "distance_to_route"])
   df['time'] = df['time'].apply(lambda x: x.astimezone(timezone('Asia/Singapore')))
 
   return df
@@ -140,7 +140,6 @@ def get_gpx_df(filepath):
     return df
 
 def plot_map(df, color, label):
-    plt.figure(figsize=(15, 8))
     plt.plot(df['lon'], df['lat'], color=color, label=label)
     ctx.add_basemap(plt.gca(), crs='EPSG:4326', source=ctx.providers.OpenStreetMap.Mapnik)
     plt.legend()

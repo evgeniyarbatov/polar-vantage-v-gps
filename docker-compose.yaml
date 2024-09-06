@@ -11,30 +11,29 @@ services:
       - default
     restart: unless-stopped
 
-  osrm:
-    image: osrm/osrm-backend
-    volumes:
-      - ./osrm:/data
-      - ./osrm:/profiles
-    networks:
-      - default
-    ports:
-      - 6000:5000
-    restart: unless-stopped
-    command: >
-      bash -c "
-      osrm-extract -p /profiles/foot.lua /data/singapore.osm.pbf && 
-      osrm-partition /data/singapore.osrm && 
-      osrm-customize /data/singapore.osrm && 
-      osrm-routed \
-      --algorithm mld \
-      --max-matching-size 20000 \
-      --max-viaroute-size 20000 \
-      --max-trip-size 20000 \
-      --max-table-size 20000 \
-      /data/singapore.osrm
-      "
-
+  # osrm:
+  #   image: osrm/osrm-backend
+  #   volumes:
+  #     - ./osrm:/data
+  #     - ./osrm:/profiles
+  #   networks:
+  #     - default
+  #   ports:
+  #     - 6000:5000
+  #   restart: unless-stopped
+  #   command: >
+  #     bash -c "
+  #     osrm-extract -p /profiles/foot.lua /data/singapore.osm.pbf && 
+  #     osrm-partition /data/singapore.osrm && 
+  #     osrm-customize /data/singapore.osrm && 
+  #     osrm-routed \
+  #     --algorithm mld \
+  #     --max-matching-size 20000 \
+  #     --max-viaroute-size 20000 \
+  #     --max-trip-size 20000 \
+  #     --max-table-size 20000 \
+  #     /data/singapore.osrm
+  #     "
 
 networks:
   default:
