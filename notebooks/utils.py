@@ -3,6 +3,11 @@ import psycopg2
 
 import pandas as pd
 
+import matplotlib
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import contextily as ctx
+
 from pytz import timezone
 from geopy.distance import geodesic
 
@@ -113,3 +118,74 @@ def get_total_distance(df):
   df['accumulated_distance'] = df['distance'].cumsum()
   
   return df
+
+def get_gpx_df(filepath):
+    gpx_file = open(filepath, 'r')
+    gpx = gpxpy.parse(gpx_file)
+
+    data = []
+    for track in gpx.tracks:
+        for segment in track.segments:
+            for point in segment.points:
+                lat, lng = point.latitude, point.longitude,
+                time = point.time.astimezone(timezone('Asia/Singapore')) if point.time else None
+                data.append({
+                  'time': time,
+                  'latitude': lat, 
+                  'longitude': lng,
+                  'elevation': point.elevation,
+                })
+
+    df = pd.DataFrame(data)
+    return df
+
+def plot_map(df, color, label):
+    plt.figure(figsize=(15, 8))
+    plt.plot(df['longitude'], df['latitude'], color=color, label=label)
+    ctx.add_basemap(plt.gca(), crs='EPSG:4326', source=ctx.providers.OpenStreetMap.Mapnik)
+    plt.legend()
+    plt.xticks([], [])
+    plt.yticks([], [])
+    plt.tick_params(axis='both', which='both', bottom=False, top=False, left=False, right=False)
+    plt.show()
+
+def plot_location_error(df, color, label):
+    def get_linewidth(df):
+        min_range, max_range = 1, 20
+
+        min_val = df['distance_to_route'].min()
+        max_val = df['distance_to_route'].max()
+
+        return ((df['distance_to_route'] - min_val) / (max_val - min_val)) * (max_range - min_range) + min_range
+    
+    
+    plt.figure(figsize=(15, 8))
+    
+    df['linewidth'] = get_linewidth(df)
+    
+    for i in range(len(df) - 1):
+        plt.plot(
+            df['longitude'][i:i+2], 
+            df['latitude'][i:i+2], 
+            linewidth=df['linewidth'][i], 
+            color=color,
+        )
+
+    plt.legend([label])
+    
+    ctx.add_basemap(plt.gca(), crs='EPSG:4326', source=ctx.providers.OpenStreetMap.Mapnik)
+    plt.xticks([], [])
+    plt.yticks([], [])
+    plt.tick_params(axis='both', which='both', bottom=False, top=False, left=False, right=False)
+    plt.show()    
+    
+def plot_elevation(df, color, label):
+    plt.figure(figsize=(12, 6))
+    
+    plt.plot(df['time'], df['elevation'], color=color, label=label)
+    plt.xlabel('Time')
+    plt.ylabel('Elevation (m)')
+    plt.legend()
+    plt.grid(True)
+    plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%H:%M'))
+    plt.show() 

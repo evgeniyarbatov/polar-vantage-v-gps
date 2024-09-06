@@ -1,6 +1,6 @@
 # Polar Vantage V Satellites
 
-Polar Vantage V has several options for positioning satellites:
+Polar Vantage V has [several options](https://support.polar.com/e_manuals/vantage-v2/polar-vantage-v2-user-manual-english/gps.htm) for positioning satellites:
 
 - GPS + Glonass (default)
 - GPS + Galileo

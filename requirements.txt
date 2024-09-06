@@ -1,0 +1,7 @@
+gpxpy
+pandas
+matplotlib
+contextily
+pytz
+ipykernel
+psycopg2
