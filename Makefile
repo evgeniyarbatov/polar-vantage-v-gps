@@ -7,6 +7,8 @@ venv:
 	@python3 -m venv $(VENV_PATH)
 
 install: venv
+	@brew install postgresql@14
+
 	@source $(VENV_PATH)/bin/activate && \
 	pip install --disable-pip-version-check -q -r requirements.txt
 
