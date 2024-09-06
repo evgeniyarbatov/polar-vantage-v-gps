@@ -5,3 +5,4 @@ contextily
 pytz
 ipykernel
 psycopg2
+polyline

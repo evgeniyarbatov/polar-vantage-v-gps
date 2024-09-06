@@ -131,8 +131,8 @@ def get_gpx_df(filepath):
                 time = point.time.astimezone(timezone('Asia/Singapore')) if point.time else None
                 data.append({
                   'time': time,
-                  'latitude': lat, 
-                  'longitude': lng,
+                  'lat': lat, 
+                  'lon': lng,
                   'elevation': point.elevation,
                 })
 
@@ -141,7 +141,7 @@ def get_gpx_df(filepath):
 
 def plot_map(df, color, label):
     plt.figure(figsize=(15, 8))
-    plt.plot(df['longitude'], df['latitude'], color=color, label=label)
+    plt.plot(df['lon'], df['lat'], color=color, label=label)
     ctx.add_basemap(plt.gca(), crs='EPSG:4326', source=ctx.providers.OpenStreetMap.Mapnik)
     plt.legend()
     plt.xticks([], [])
