@@ -140,9 +140,12 @@ def get_gpx_df(filepath):
     return df
 
 def plot_map(df, color, label):
+    plt.figure(dpi=300)
+    ax = plt.gca()
+    ax.set_aspect('equal') 
     plt.plot(df['lon'], df['lat'], color=color, label=label)
-    ctx.add_basemap(plt.gca(), crs='EPSG:4326', source=ctx.providers.OpenStreetMap.Mapnik)
-    plt.legend()
+    ctx.add_basemap(plt.gca(), crs='EPSG:4326', source=ctx.providers.Esri.WorldImagery)
+    plt.legend(loc='upper right', bbox_to_anchor=(1, 1))
     plt.xticks([], [])
     plt.yticks([], [])
     plt.tick_params(axis='both', which='both', bottom=False, top=False, left=False, right=False)
@@ -157,8 +160,10 @@ def plot_location_error(df, color, label):
 
         return ((df['distance_to_route'] - min_val) / (max_val - min_val)) * (max_range - min_range) + min_range
     
-    
     plt.figure(figsize=(15, 8))
+
+    ax = plt.gca()
+    ax.set_aspect('equal')
     
     df['linewidth'] = get_linewidth(df)
     
