@@ -98,8 +98,8 @@ FROM
   return df
 
 def crop_route(df, start_location, stop_location, start_point_count):
-  df['start_distance'] = df.apply(lambda row: geodesic((row['latitude'], row['longitude']), start_location).meters, axis=1)
-  df['stop_distance'] = df.apply(lambda row: geodesic((row['latitude'], row['longitude']), stop_location).meters, axis=1)
+  df['start_distance'] = df.apply(lambda row: geodesic((row['lat'], row['lon']), start_location).meters, axis=1)
+  df['stop_distance'] = df.apply(lambda row: geodesic((row['lat'], row['lon']), stop_location).meters, axis=1)
   
   start_point_idx = df.iloc[:start_point_count]['start_distance'].idxmin()
   end_point_idx = df.iloc[-200:]['stop_distance'].idxmin()
@@ -109,12 +109,12 @@ def crop_route(df, start_location, stop_location, start_point_count):
   return df.reset_index(drop=True)
 
 def get_total_distance(df):
-  df['prev_latitude'] = df['latitude'].shift(1)
-  df['prev_longitude'] = df['longitude'].shift(1)
+  df['prev_lat'] = df['lat'].shift(1)
+  df['prev_lon'] = df['lon'].shift(1)
 
   df = df.dropna().reset_index(drop=True)
 
-  df['distance'] = df.apply(lambda x: geodesic((x['prev_latitude'], x['prev_longitude']), (x['latitude'], x['longitude'])).meters, axis=1)
+  df['distance'] = df.apply(lambda x: geodesic((x['prev_lat'], x['prev_lon']), (x['lat'], x['lon'])).meters, axis=1)
   df['accumulated_distance'] = df['distance'].cumsum()
   
   return df
@@ -164,8 +164,8 @@ def plot_location_error(df, color, label):
     
     for i in range(len(df) - 1):
         plt.plot(
-            df['longitude'][i:i+2], 
-            df['latitude'][i:i+2], 
+            df['lon'][i:i+2], 
+            df['lat'][i:i+2], 
             linewidth=df['linewidth'][i], 
             color=color,
         )
